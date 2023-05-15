@@ -1,4 +1,4 @@
-package org.necklace.threp.domain.valueobject;
+package org.necklace.threp.domain.valueobject.ids;
 
 import java.util.Objects;
 
