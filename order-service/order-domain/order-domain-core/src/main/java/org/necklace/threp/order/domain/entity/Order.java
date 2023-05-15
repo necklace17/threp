@@ -1,14 +1,17 @@
 package org.necklace.threp.order.domain.entity;
 
 import java.util.List;
+import java.util.UUID;
 import org.necklace.threp.domain.entity.AggregateRoot;
 import org.necklace.threp.domain.valueobject.Money;
 import org.necklace.threp.domain.valueobject.OrderStatus;
 import org.necklace.threp.domain.valueobject.ids.CustomerId;
 import org.necklace.threp.domain.valueobject.ids.OrderId;
 import org.necklace.threp.domain.valueobject.ids.RestaurantId;
-import org.necklace.threp.order.domain.va.TrackingId;
+import org.necklace.threp.order.domain.exception.OrderDomainException;
+import org.necklace.threp.order.domain.valueobject.OrderItemId;
 import org.necklace.threp.order.domain.valueobject.StreetAddress;
+import org.necklace.threp.order.domain.valueobject.TrackingId;
 
 public class Order extends AggregateRoot<OrderId> {
 
@@ -65,6 +68,99 @@ public class Order extends AggregateRoot<OrderId> {
     return failureMessages;
   }
 
+  public void initializeOrder() {
+    setId(new OrderId(UUID.randomUUID()));
+    trackingId = new TrackingId(UUID.randomUUID());
+    initializeOrderItems();
+  }
+
+  private void initializeOrderItems() {
+    long itemId = 1;
+    for (OrderItem orderItem : orderItems) {
+      orderItem.initializeOrderItem(super.getId(), new OrderItemId(itemId++));
+    }
+  }
+
+  public void validateOrder() {
+    validateInitialOrder();
+    validateTotalPrice();
+    validateItemsPrice();
+  }
+
+  private void validateInitialOrder() {
+    if (orderStatus != null || getId() != null) {
+      throw new OrderDomainException("Order is not in correct state for initialization!");
+    }
+  }
+
+  private void validateTotalPrice() {
+    if (price == null || !price.isGreaterThanZero()) {
+      throw new OrderDomainException("Total price must be greater than zero!");
+    }
+  }
+
+  private void validateItemsPrice() {
+    Money orderItemsTotal = orderItems.stream()
+        .map(orderItem -> {
+          validateItemPrice(orderItem);
+          return orderItem.getSubTotal();
+        })
+        .reduce(Money.ZERO, Money::add);
+    if (!price.equals(orderItemsTotal)) {
+      throw new OrderDomainException(
+          "Total price: " + price.getAmount() + " is not equal to Order items total: "
+              + orderItemsTotal.getAmount() + "!");
+    }
+  }
+
+  private void validateItemPrice(OrderItem orderItem) {
+    if (!orderItem.isPriceValid()) {
+      throw new OrderDomainException(
+          "Order item price: " + orderItem.getPrice().getAmount() + " is not valid for product"
+              + orderItem.getProduct().getId() + "!");
+    }
+  }
+
+  public void pay() {
+    if (orderStatus != OrderStatus.PENDING) {
+      throw new OrderDomainException("Order is not in correct state for pay operation!");
+    }
+    orderStatus = OrderStatus.PAID;
+  }
+
+  public void approve() {
+    if (orderStatus != OrderStatus.PAID) {
+      throw new OrderDomainException("Order is not in correct state for approve operation!");
+    }
+    orderStatus = OrderStatus.APPROVED;
+  }
+
+  public void initCancel(List<String> failureMessages) {
+    if (orderStatus != OrderStatus.PAID) {
+      throw new OrderDomainException("Order is not in correct state for initCancel operation!");
+    }
+    orderStatus = OrderStatus.CANCELLING;
+    updateFailureMessages(failureMessages);
+  }
+
+  private void updateFailureMessages(List<String> failureMessages) {
+    if (this.failureMessages != null && failureMessages != null) {
+      this.failureMessages.addAll(
+          failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+    }
+    if (this.failureMessages == null) {
+      this.failureMessages = failureMessages;
+    }
+  }
+
+  public void cancel(List<String> failureMessages) {
+    if (!(orderStatus == OrderStatus.PENDING || orderStatus == OrderStatus.CANCELLING)) {
+      throw new OrderDomainException("Order is not in correct state for cancelling operation!");
+    }
+    orderStatus = OrderStatus.CANCELLED;
+    updateFailureMessages(failureMessages);
+  }
+
   public static final class Builder {
 
     private OrderId orderId;
@@ -83,6 +179,7 @@ public class Order extends AggregateRoot<OrderId> {
     public static Builder builder() {
       return new Builder();
     }
+
 
     public Builder orderId(OrderId val) {
       orderId = val;
