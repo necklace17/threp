@@ -1,4 +1,4 @@
-package org.necklace.domain.entity;
+package org.necklace.threp.domain.entity;
 
 import java.util.Objects;
 
