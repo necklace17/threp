@@ -3,14 +3,19 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>order-application-service</artifactId>
-  <modelVersion>4.0.0</modelVersion>
+  <dependencies>
+    <dependency>
+      <artifactId>order-domain-core</artifactId>
+      <groupId>org.necklace</groupId>
+    </dependency>
+  </dependencies>
 
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>order-domain</artifactId>
     <groupId>org.necklace</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-
   <properties>
   </properties>
 

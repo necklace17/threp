@@ -2,21 +2,19 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>order-dataaccess</artifactId>
-  <dependencies>
-    <dependency>
-      <artifactId>order-application-service</artifactId>
-      <groupId>org.necklace</groupId>
-    </dependency>
-  </dependencies>
-
+  <artifactId>common</artifactId>
   <modelVersion>4.0.0</modelVersion>
 
+  <modules>
+    <module>common-domain</module>
+  </modules>
+  <packaging>pom</packaging>
   <parent>
-    <artifactId>order-service</artifactId>
+    <artifactId>threp</artifactId>
     <groupId>org.necklace</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
+
   <properties>
   </properties>
 
