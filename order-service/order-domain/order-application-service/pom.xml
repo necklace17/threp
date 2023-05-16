@@ -8,6 +8,11 @@
       <artifactId>order-domain-core</artifactId>
       <groupId>org.necklace</groupId>
     </dependency>
+    <dependency>
+      <artifactId>common-domain</artifactId>
+      <groupId>org.necklace</groupId>
+    </dependency>
+    <!--    TODO: add spring-boot-starter-validation & spring-tx -->
   </dependencies>
 
   <modelVersion>4.0.0</modelVersion>
@@ -18,5 +23,4 @@
   </parent>
   <properties>
   </properties>
-
 </project>
