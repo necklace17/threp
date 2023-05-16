@@ -1,12 +1,14 @@
 package org.necklace.threp.order.domain.entity;
 
 import java.util.List;
+import java.util.Map;
 import org.necklace.threp.domain.entity.AggregateRoot;
+import org.necklace.threp.domain.valueobject.ids.ProductId;
 import org.necklace.threp.domain.valueobject.ids.RestaurantId;
 
 public class Restaurant extends AggregateRoot<RestaurantId> {
 
-  public final List<Product> products;
+  public final Map<ProductId, Product> products;
   private boolean active;
 
   private Restaurant(Builder builder) {
@@ -16,7 +18,11 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
   }
 
   public List<Product> getProducts() {
-    return products;
+    return products.values().stream().toList();
+  }
+
+  public Product getProduct(ProductId productId) {
+    return products.get(productId);
   }
 
   public boolean isActive() {
@@ -26,7 +32,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
   public static final class Builder {
 
     private RestaurantId restaurantId;
-    private List<Product> products;
+    private Map<ProductId, Product> products;
     private boolean active;
 
     private Builder() {
@@ -42,7 +48,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
     }
 
     public Builder products(List<Product> val) {
-      products = val;
+      val.forEach(product -> products.put(product.getId(), product));
       return this;
     }
 

@@ -9,13 +9,13 @@ import org.necklace.threp.order.domain.event.OrderPaidEvent;
 
 public interface OrderDomainService {
 
-  OrderCancelledEvent cancelOrderPayment(Order order, List<String> failureMessages);
-
   OrderCreatedEvent validateAndInitializeOrder(Order order, Restaurant restaurant);
 
   OrderPaidEvent payOrder(Order order);
 
   void approveOrder(Order order);
+
+  OrderCancelledEvent cancelOrderPayment(Order order, List<String> failureMessages);
 
   void cancelOrder(Order order, List<String> failureMessages);
 
