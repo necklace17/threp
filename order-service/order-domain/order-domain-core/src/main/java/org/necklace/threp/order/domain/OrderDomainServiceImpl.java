@@ -15,7 +15,6 @@ import org.necklace.threp.order.domain.exception.OrderDomainException;
 @Slf4j
 public class OrderDomainServiceImpl implements OrderDomainService {
 
-
   private static final String UTC = "UTC";
 
   @Override
@@ -36,12 +35,13 @@ public class OrderDomainServiceImpl implements OrderDomainService {
   }
 
   private void setOrderProductInformation(Order order, Restaurant restaurant) {
-    order.getOrderItems().forEach(orderItem -> {
-      Product currentProduct = orderItem.getProduct();
-      Product restaurantProduct = restaurant.getProduct(currentProduct.getId());
-      currentProduct.updateWithConfirmedNameAndPrice(
-          restaurantProduct.getName(), restaurantProduct.getPrice());
-    });
+    order.getOrderItems()
+        .forEach(orderItem -> {
+          Product currentProduct = orderItem.getProduct();
+          Product restaurantProduct = restaurant.getProduct(currentProduct.getId());
+          currentProduct.updateWithConfirmedNameAndPrice(
+              restaurantProduct.getName(), restaurantProduct.getPrice());
+        });
   }
 
   @Override
