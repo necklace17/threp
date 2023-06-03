@@ -20,12 +20,10 @@
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
       <scope>provided</scope>
-      <version>1.18.10</version>
     </dependency>
     <dependency>
-      <artifactId>logback-classic</artifactId>
-      <groupId>ch.qos.logback</groupId>
-      <version>1.2.3</version>
+      <artifactId>spring-boot-starter-logging</artifactId>
+      <groupId>org.springframework.boot</groupId>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -60,6 +58,12 @@
         <groupId>org.necklace</groupId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <artifactId>mockito-core</artifactId>
+        <groupId>org.mockito</groupId>
+        <scope>test</scope>
+        <version>${mockito.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <groupId>org.necklace</groupId>
@@ -78,6 +82,7 @@
   </parent>
   <properties>
     <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
+    <mockito.version>4.3.1</mockito.version>
   </properties>
 
   <version>1.0-SNAPSHOT</version>
