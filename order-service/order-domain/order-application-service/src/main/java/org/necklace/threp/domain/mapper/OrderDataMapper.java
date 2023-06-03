@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.necklace.threp.domain.dto.create.CreateOrderCommand;
 import org.necklace.threp.domain.dto.create.CreateOrderResponse;
 import org.necklace.threp.domain.dto.create.OrderAddress;
+import org.necklace.threp.domain.dto.track.TrackOrderResponse;
 import org.necklace.threp.domain.valueobject.Money;
 import org.necklace.threp.domain.valueobject.ids.CustomerId;
 import org.necklace.threp.domain.valueobject.ids.ProductId;
@@ -67,6 +68,15 @@ public class OrderDataMapper {
         .orderTrackingId(order.getTrackingId()
             .getValue())
         .orderStatus(order.getOrderStatus())
+        .build();
+  }
+
+  public TrackOrderResponse orderToTrackOrderResponse(Order order) {
+    return TrackOrderResponse.builder()
+        .orderTrackingId(order.getTrackingId()
+            .getValue())
+        .orderStatus(order.getOrderStatus())
+        .failureMessages(order.getFailureMessages())
         .build();
   }
 }
