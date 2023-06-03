@@ -5,8 +5,7 @@ import org.necklace.threp.order.domain.entity.Order;
 
 public class OrderCreatedEvent extends OrderEvent {
 
-  public OrderCreatedEvent(Order order,
-      ZonedDateTime createdAt) {
+  public OrderCreatedEvent(Order order, ZonedDateTime createdAt) {
     super(order, createdAt);
   }
 }
