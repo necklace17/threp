@@ -1,6 +1,8 @@
 package org.necklace.threp.domain.mapper;
 
-//TODO: @Component
+import org.springframework.stereotype.Component;
+
+@Component
 public class OrderDataMapper {
 
 }

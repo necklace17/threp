@@ -1,6 +1,7 @@
 package org.necklace.threp.domain.dto.create;
 
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +12,10 @@ import org.necklace.threp.domain.valueobject.OrderStatus;
 @AllArgsConstructor
 public class CreateOrderResponse {
 
-  //TODO: fore add NotNull
+  @NotNull
   private final UUID orderTrackingId;
+  @NotNull
   private final OrderStatus orderStatus;
+  @NotNull
   private final String message;
 }

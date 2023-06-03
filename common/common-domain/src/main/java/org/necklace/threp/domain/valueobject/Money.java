@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class Money {
 
-
   public static final Money ZERO = new Money(BigDecimal.ZERO);
   private final BigDecimal amount;
 
